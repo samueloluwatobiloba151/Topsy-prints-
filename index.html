@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Topsy Prints</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f5f5f5;
+    color: #222;
+}
+
+/* HEADER */
+
+header {
+    background: #111;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 8px;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: #0066ff;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #ffffff, #eaf1ff);
+}
+
+.hero h2 {
+    font-size: 45px;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    max-width: 600px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.button {
+    background: #0066ff;
+    color: white;
+    padding: 15px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.button:hover {
+    background: #004dcc;
+}
+
+/* SERVICES */
+
+.services {
+    padding: 70px 20px;
+    text-align: center;
+    background: white;
+}
+
+.services h2 {
+    font-size: 35px;
+    margin-bottom: 40px;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #f5f5f5;
+    padding: 30px 20px;
+    width: 280px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    font-size: 21px;
+}
+
+.card p {
+    line-height: 1.6;
+    color: #555;
+}
+
+/* PORTFOLIO */
+
+.portfolio {
+    padding: 70px 20px;
+    text-align: center;
+    background: #111;
+    color: white;
+}
+
+.portfolio h2 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.portfolio > p {
+    color: #aaa;
+}
+
+.portfolio-grid {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.portfolio-item {
+    width: 280px;
+}
+
+.image-container {
+    width: 100%;
+    height: 330px;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* IMPORTANT IMAGE FIX */
+
+.image-container img {
+    max-width: 100%;
+}
+
+/* PORTFOLIO TITLES */
+
+.portfolio-item h3 {
+    margin-top: 15px;
+    font-size: 18px;
+}
+
+/* CONTACT */
+
+.contact {
+    padding: 70px 20px;
+    text-align: center;
+    background: white;
+}
+
+.contact h2 {
+    font-size: 35px;
+    margin-bottom: 15px;
+}
+
+.contact p {
+    margin-bottom: 25px;
+    color: #555;
+}
+
+.whatsapp {
+    display: inline-block;
+    background: #0066ff;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.whatsapp:hover {
+    background: #004dcc;
+}
+
+/* FOOTER */
+
+footer {
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .hero h2 {
+        font-size: 34px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    header h1 {
+        font-size: 26px;
+    }
+
+    nav a {
+        margin: 0 4px;
+        font-size: 12px;
+    }
+
+    .portfolio-item {
+        width: 100%;
+        max-width: 330px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+    <h1>Topsy Prints</h1>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+    <h2>Creative Designs That Stand Out</h2>
+
+    <p>
+        Professional graphic design services for brands,
+        businesses, events and special occasions.
+    </p>
+
+    <a href="#portfolio" class="button">
+        View My Work
+    </a>
+
+</section>
+
+
+<!-- SERVICES -->
+
+<section class="services" id="services">
+
+    <h2>My Services</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Flyer Design</h3>
+            <p>
+                Beautiful and professional flyers for businesses,
+                events and promotions.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Logo Design</h3>
+            <p>
+                Unique and professional logos that give your
+                brand a strong identity.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Birthday Designs</h3>
+            <p>
+                Creative birthday flyers, portraits and designs
+                for special occasions.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PORTFOLIO -->
+
+<section class="portfolio" id="portfolio">
+
+    <h2>My Portfolio</h2>
+
+    <p>Some of my recent designs</p>
+
+    <div class="portfolio-grid">
+
+
+        <!-- DESIGN 1 -->
+
+        <div class="portfolio-item">
+
+            <div class="image-container">
+
+                <img
+                    src="https://i.ibb.co/xKK2z2Wp/3af72cb4af43fe1a075dd998734f6761.jpg"
+                    alt="Topsy Prints Design 1"
+                >
+
+            </div>
+
+            <h3>Creative Design</h3>
+
+        </div>
+
+
+        <!-- DESIGN 2 -->
+
+        <div class="portfolio-item">
+
+            <div class="image-container">
+
+                <img
+                    src="https://i.ibb.co/9m8RbzY9/06c4efa10e36deff62b407b31b6349cf.jpg"
+                    alt="Topsy Prints Design 2"
+                >
+
+            </div>
+
+            <h3>Graphic Design</h3>
+
+        </div>
+
+
+        <!-- DESIGN 3 -->
+
+        <div class="portfolio-item">
+
+            <div class="image-container">
+
+                <img
+                    src="https://i.ibb.co/5hyRv7HW/6e18076357c770efcc8c2229f8e40488.jpg"
+                    alt="Topsy Prints Design 3"
+                >
+
+            </div>
+
+            <h3>Flyer Design</h3>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section class="contact" id="contact">
+
+    <h2>Let's Work Together</h2>
+
+    <p>
+        Need a professional design for your business or event?
+    </p>
+
+    <a
+        class="whatsapp"
+        href="https://wa.me/2349122741571"
+        target="_blank"
+    >
+        Contact Topsy Prints
+    </a>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <p>
+        © 2026 Topsy Prints. All Rights Reserved.
+    </p>
+
+</footer>
+
+</body>
+</html>
