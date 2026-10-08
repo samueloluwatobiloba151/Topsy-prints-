@@ -3,328 +3,947 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
 
 <title>Topsy Prints</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
 }
 
-html {
-    scroll-behavior: smooth;
+html{scroll-behavior:smooth;}
+
+body{
+    background:#07111f;
+    color:#fff;
+    min-height:100vh;
 }
 
-body {
-    background: #f5f5f5;
-    color: #222;
+button,input,textarea,select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
 }
 
 /* HEADER */
 
-header {
-    background: #111;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(7,17,31,.96);
+    border-bottom:1px solid #1d3048;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 }
 
-header h1 {
-    font-size: 30px;
-    margin-bottom: 12px;
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 8px;
-    font-size: 14px;
+.brand img{
+    width:42px;
+    height:42px;
+    object-fit:contain;
+    border-radius:10px;
 }
 
-nav a:hover {
-    color: #0066ff;
+.brand-text h1{
+    font-size:18px;
+}
+
+.brand-text p{
+    font-size:11px;
+    color:#8fa5bf;
+    margin-top:3px;
+}
+
+.header-actions{
+    display:flex;
+    gap:8px;
+}
+
+.icon-btn{
+    width:40px;
+    height:40px;
+    border:1px solid #263b56;
+    background:#102035;
+    color:#fff;
+    border-radius:12px;
+}
+
+/* MAIN */
+
+main{
+    max-width:1100px;
+    margin:auto;
+    padding-bottom:90px;
+}
+
+.page{
+    display:none;
+    padding:20px;
+}
+
+.page.active{
+    display:block;
 }
 
 /* HERO */
 
-.hero {
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 40px 20px;
-    background: linear-gradient(135deg, #ffffff, #eaf1ff);
+.hero-card{
+    background:linear-gradient(135deg,#102d52,#0c1d32);
+    border:1px solid #244a73;
+    border-radius:24px;
+    padding:28px 22px;
+    margin-bottom:18px;
+    overflow:hidden;
+    position:relative;
 }
 
-.hero h2 {
-    font-size: 45px;
-    max-width: 800px;
-    margin-bottom: 20px;
+.hero-card:after{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:rgba(0,119,255,.12);
+    right:-60px;
+    top:-60px;
 }
 
-.hero p {
-    font-size: 18px;
-    max-width: 600px;
-    margin-bottom: 30px;
-    line-height: 1.6;
+.hero-logo{
+    width:75px;
+    height:75px;
+    object-fit:contain;
+    margin-bottom:15px;
 }
 
-.button {
-    background: #0066ff;
-    color: white;
-    padding: 15px 28px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
+.hero-card h2{
+    font-size:31px;
+    line-height:1.15;
+    margin-bottom:12px;
+    position:relative;
+    z-index:2;
 }
 
-.button:hover {
-    background: #004dcc;
+.hero-card p{
+    color:#b9c9db;
+    line-height:1.6;
+    margin-bottom:22px;
+    position:relative;
+    z-index:2;
+}
+
+.buttons{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    position:relative;
+    z-index:2;
+}
+
+.btn{
+    border:none;
+    padding:13px 17px;
+    border-radius:12px;
+    font-weight:bold;
+}
+
+.btn-primary{
+    background:#087cff;
+    color:#fff;
+}
+
+.btn-secondary{
+    background:#162a42;
+    color:#dceaff;
+    border:1px solid #29425f;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.stat{
+    background:#0d1c2e;
+    border:1px solid #1d334c;
+    padding:18px 10px;
+    border-radius:16px;
+    text-align:center;
+}
+
+.stat strong{
+    display:block;
+    font-size:22px;
+    color:#48a1ff;
+}
+
+.stat span{
+    font-size:11px;
+    color:#91a6bd;
+    margin-top:5px;
+    display:block;
+}
+
+/* SECTION */
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:25px 0 14px;
+}
+
+.section-title h2{
+    font-size:21px;
+}
+
+.section-title span{
+    color:#6daeff;
+    font-size:12px;
+}
+
+/* QUICK ACTIONS */
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:11px;
+}
+
+.quick-card{
+    background:#0d1c2e;
+    border:1px solid #1d334c;
+    padding:18px;
+    border-radius:16px;
+    transition:.2s;
+}
+
+.quick-card:hover{
+    border-color:#1684ff;
+    transform:translateY(-2px);
+}
+
+.quick-icon{
+    font-size:25px;
+    margin-bottom:9px;
+}
+
+.quick-card h3{
+    font-size:15px;
+    margin-bottom:5px;
+}
+
+.quick-card p{
+    font-size:11px;
+    color:#8ea4bc;
 }
 
 /* SERVICES */
 
-.services {
-    padding: 70px 20px;
-    text-align: center;
-    background: white;
+.cards{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
 }
 
-.services h2 {
-    font-size: 35px;
-    margin-bottom: 40px;
+.card{
+    background:#0d1c2e;
+    border:1px solid #1d334c;
+    border-radius:18px;
+    padding:20px;
 }
 
-.cards {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    flex-wrap: wrap;
+.card .icon{
+    font-size:27px;
+    margin-bottom:12px;
 }
 
-.card {
-    background: #f5f5f5;
-    padding: 30px 20px;
-    width: 280px;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+.card h3{
+    margin-bottom:8px;
+    font-size:16px;
 }
 
-.card h3 {
-    margin-bottom: 15px;
-    font-size: 21px;
-}
-
-.card p {
-    line-height: 1.6;
-    color: #555;
+.card p{
+    color:#91a5bb;
+    font-size:12px;
+    line-height:1.6;
 }
 
 /* PORTFOLIO */
 
-.portfolio {
-    padding: 70px 20px;
-    text-align: center;
-    background: #111;
-    color: white;
+.portfolio-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
 }
 
-.portfolio h2 {
-    font-size: 38px;
-    margin-bottom: 10px;
+.portfolio-item{
+    background:#0d1c2e;
+    border:1px solid #1d334c;
+    border-radius:17px;
+    overflow:hidden;
 }
 
-.portfolio > p {
-    color: #aaa;
+.portfolio-img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    display:block;
+    background:#142338;
 }
 
-.portfolio-grid {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    flex-wrap: wrap;
-    margin-top: 40px;
+.portfolio-info{
+    padding:13px;
 }
 
-.portfolio-item {
-    width: 280px;
+.portfolio-info h3{
+    font-size:14px;
+    margin-bottom:5px;
 }
 
-.image-container {
-    width: 100%;
-    height: 330px;
-    background: #222;
-    border: 1px solid #444;
-    border-radius: 15px;
-    overflow: hidden;
+.portfolio-info p{
+    color:#8399b0;
+    font-size:11px;
 }
 
-.image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+/* ACCOUNT */
+
+.account-card{
+    background:#0d1c2e;
+    border:1px solid #1d334c;
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:12px;
 }
 
-/* IMPORTANT IMAGE FIX */
-
-.image-container img {
-    max-width: 100%;
+.profile-head{
+    display:flex;
+    align-items:center;
+    gap:13px;
 }
 
-/* PORTFOLIO TITLES */
+.avatar{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:#087cff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:20px;
+}
 
-.portfolio-item h3 {
-    margin-top: 15px;
-    font-size: 18px;
+.profile-head h3{
+    font-size:17px;
+}
+
+.profile-head p{
+    color:#8198b0;
+    font-size:11px;
+    margin-top:4px;
+}
+
+/* FORMS */
+
+.form-card{
+    background:#0d1c2e;
+    border:1px solid #1d334c;
+    border-radius:20px;
+    padding:20px;
+}
+
+.form-card h2{
+    margin-bottom:7px;
+}
+
+.form-card > p{
+    color:#8fa4bb;
+    font-size:12px;
+    margin-bottom:20px;
+}
+
+.field{
+    margin-bottom:14px;
+}
+
+.field label{
+    display:block;
+    font-size:12px;
+    color:#a7b8ca;
+    margin-bottom:7px;
+}
+
+.field input,
+.field textarea,
+.field select{
+    width:100%;
+    padding:13px;
+    background:#07111f;
+    color:#fff;
+    border:1px solid #29415d;
+    border-radius:11px;
+    outline:none;
+}
+
+.field textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+    border-color:#087cff;
+}
+
+/* REQUEST */
+
+.request{
+    background:#0d1c2e;
+    border:1px solid #1d334c;
+    border-radius:17px;
+    padding:17px;
+    margin-bottom:10px;
+}
+
+.request-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.request h3{
+    font-size:15px;
+}
+
+.status{
+    background:#123b2b;
+    color:#5ee6a3;
+    border-radius:20px;
+    padding:5px 9px;
+    font-size:10px;
+}
+
+.request p{
+    color:#91a5bb;
+    font-size:12px;
+    line-height:1.5;
+    margin-top:8px;
+}
+
+/* LOGIN */
+
+.auth-wrap{
+    min-height:70vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.auth-card{
+    width:100%;
+    max-width:430px;
+    background:#0d1c2e;
+    border:1px solid #1d334c;
+    border-radius:22px;
+    padding:24px;
+}
+
+.auth-logo{
+    display:block;
+    width:70px;
+    height:70px;
+    object-fit:contain;
+    margin:0 auto 15px;
+}
+
+.auth-card h2{
+    text-align:center;
+    margin-bottom:7px;
+}
+
+.auth-card .sub{
+    text-align:center;
+    color:#849bb3;
+    font-size:12px;
+    margin-bottom:22px;
+}
+
+.auth-links{
+    display:flex;
+    justify-content:space-between;
+    margin-top:14px;
+}
+
+.auth-links button{
+    background:none;
+    border:none;
+    color:#5caaff;
+    font-size:12px;
+}
+
+/* SETTINGS */
+
+.setting{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:15px 0;
+    border-bottom:1px solid #1d3046;
+}
+
+.setting:last-child{
+    border-bottom:none;
+}
+
+.setting h3{
+    font-size:14px;
+}
+
+.setting p{
+    color:#8096ad;
+    font-size:11px;
+    margin-top:4px;
+}
+
+.toggle{
+    width:48px;
+    height:27px;
+    background:#263b52;
+    border-radius:20px;
+    padding:3px;
+    border:none;
+}
+
+.toggle span{
+    width:21px;
+    height:21px;
+    display:block;
+    background:#fff;
+    border-radius:50%;
+    transition:.2s;
+}
+
+.toggle.on{
+    background:#087cff;
+}
+
+.toggle.on span{
+    transform:translateX(21px);
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:40px 20px;
+    color:#8298af;
+}
+
+.empty-icon{
+    font-size:40px;
+    margin-bottom:12px;
 }
 
 /* CONTACT */
 
-.contact {
-    padding: 70px 20px;
-    text-align: center;
-    background: white;
+.contact-box{
+    background:linear-gradient(135deg,#102d52,#0c1d32);
+    border:1px solid #244a73;
+    border-radius:22px;
+    padding:25px;
 }
 
-.contact h2 {
-    font-size: 35px;
-    margin-bottom: 15px;
+.contact-row{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    padding:15px 0;
+    border-bottom:1px solid #24405e;
 }
 
-.contact p {
-    margin-bottom: 25px;
-    color: #555;
+.contact-row:last-child{
+    border-bottom:none;
 }
 
-.whatsapp {
-    display: inline-block;
-    background: #0066ff;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
+.contact-row .ci{
+    font-size:24px;
 }
 
-.whatsapp:hover {
-    background: #004dcc;
+.contact-row h3{
+    font-size:14px;
 }
 
-/* FOOTER */
+.contact-row p{
+    color:#8ea5bd;
+    font-size:11px;
+    margin-top:4px;
+}
 
-footer {
-    background: #111;
-    color: white;
-    text-align: center;
-    padding: 25px;
+/* BOTTOM NAV */
+
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:2000;
+    background:rgba(7,17,31,.97);
+    border-top:1px solid #1d334c;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    padding:7px 5px;
+}
+
+.nav-item{
+    background:none;
+    border:none;
+    color:#738aa2;
+    font-size:10px;
+    padding:5px 2px;
+}
+
+.nav-item .nav-icon{
+    display:block;
+    font-size:19px;
+    margin-bottom:3px;
+}
+
+.nav-item.active{
+    color:#4da4ff;
+}
+
+/* TOAST */
+
+#toast{
+    position:fixed;
+    left:50%;
+    bottom:80px;
+    transform:translateX(-50%) translateY(20px);
+    background:#13263c;
+    border:1px solid #315170;
+    color:#fff;
+    padding:12px 17px;
+    border-radius:12px;
+    font-size:12px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:5000;
+    max-width:90%;
+    text-align:center;
+}
+
+#toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+/* IMAGE VIEWER */
+
+.viewer{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.92);
+    z-index:4000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.viewer.active{
+    display:flex;
+}
+
+.viewer img{
+    max-width:100%;
+    max-height:90vh;
+    object-fit:contain;
+    border-radius:10px;
+}
+
+.viewer-close{
+    position:absolute;
+    top:18px;
+    right:18px;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:#fff;
+    color:#000;
+    font-size:20px;
+}
+
+/* DESKTOP */
+
+@media(min-width:700px){
+
+    .page{
+        padding:30px;
+    }
+
+    .quick-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+    .cards{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+    .portfolio-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .portfolio-img{
+        height:300px;
+    }
 }
 
 /* MOBILE */
 
-@media (max-width: 600px) {
+@media(max-width:500px){
 
-    .hero h2 {
-        font-size: 34px;
+    .hero-card h2{
+        font-size:27px;
     }
 
-    .hero p {
-        font-size: 16px;
+    .stats strong{
+        font-size:19px;
     }
 
-    header h1 {
-        font-size: 26px;
+    .portfolio-img{
+        height:190px;
     }
-
-    nav a {
-        margin: 0 4px;
-        font-size: 12px;
-    }
-
-    .portfolio-item {
-        width: 100%;
-        max-width: 330px;
-    }
-
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-
 <header>
 
-    <h1>Topsy Prints</h1>
+    <div class="brand">
+        <img src="topsy-logo.png" alt="Topsy Prints Logo"
+             onerror="this.style.display='none'">
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#services">Services</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#contact">Contact</a>
-    </nav>
+        <div class="brand-text">
+            <h1>Topsy Prints</h1>
+            <p>Creative Design Studio</p>
+        </div>
+    </div>
+
+    <div class="header-actions">
+        <button class="icon-btn" onclick="showPage('account')">👤</button>
+        <button class="icon-btn" onclick="showPage('settings')">⚙️</button>
+    </div>
 
 </header>
 
 
-<!-- HERO -->
+<main>
 
-<section class="hero" id="home">
+<!-- HOME -->
 
-    <h2>Creative Designs That Stand Out</h2>
+<section class="page active" id="home">
 
-    <p>
-        Professional graphic design services for brands,
-        businesses, events and special occasions.
-    </p>
+    <div class="hero-card">
 
-    <a href="#portfolio" class="button">
-        View My Work
-    </a>
+        <img class="hero-logo"
+             src="topsy-logo.png"
+             alt="Topsy Prints"
+             onerror="this.style.display='none'">
+
+        <h2>Creative Designs That Stand Out.</h2>
+
+        <p>
+            Professional graphic design for brands,
+            businesses, events, birthdays and social media.
+        </p>
+
+        <div class="buttons">
+
+            <button class="btn btn-primary"
+                    onclick="showPage('order')">
+                🎨 Order a Design
+            </button>
+
+            <button class="btn btn-secondary"
+                    onclick="showPage('portfolio')">
+                🖼️ View Portfolio
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+            <strong>5+</strong>
+            <span>Designs</span>
+        </div>
+
+        <div class="stat">
+            <strong>4+</strong>
+            <span>Services</span>
+        </div>
+
+        <div class="stat">
+            <strong>24/7</strong>
+            <span>Contact</span>
+        </div>
+
+    </div>
+
+
+    <div class="section-title">
+        <h2>Quick Actions</h2>
+    </div>
+
+    <div class="quick-grid">
+
+        <button class="quick-card"
+                onclick="showPage('order')">
+            <div class="quick-icon">🎨</div>
+            <h3>Order Design</h3>
+            <p>Request a custom design.</p>
+        </button>
+
+        <button class="quick-card"
+                onclick="showPage('portfolio')">
+            <div class="quick-icon">🖼️</div>
+            <h3>Portfolio</h3>
+            <p>See recent designs.</p>
+        </button>
+
+        <button class="quick-card"
+                onclick="showPage('services')">
+            <div class="quick-icon">✨</div>
+            <h3>Services</h3>
+            <p>Explore what I offer.</p>
+        </button>
+
+        <button class="quick-card"
+                onclick="showPage('contact')">
+            <div class="quick-icon">💬</div>
+            <h3>Contact</h3>
+            <p>Let's work together.</p>
+        </button>
+
+    </div>
+
+
+    <div class="section-title">
+        <h2>Featured Designs</h2>
+        <span>My Work</span>
+    </div>
+
+    <div class="portfolio-grid">
+
+        <div class="portfolio-item"
+             onclick="openImage('https://i.ibb.co/0jY2NDyD/6e18076357c770efcc8c2229f8e40488.jpg')">
+
+            <img class="portfolio-img"
+                 src="https://i.ibb.co/0jY2NDyD/6e18076357c770efcc8c2229f8e40488.jpg"
+                 alt="Design">
+
+            <div class="portfolio-info">
+                <h3>Creative Flyer</h3>
+                <p>Professional graphic design</p>
+            </div>
+
+        </div>
+
+        <div class="portfolio-item"
+             onclick="openImage('https://i.ibb.co/GvmFkY2j/3af72cb4af43fe1a075dd998734f6761.jpg')">
+
+            <img class="portfolio-img"
+                 src="https://i.ibb.co/GvmFkY2j/3af72cb4af43fe1a075dd998734f6761.jpg"
+                 alt="Design">
+
+            <div class="portfolio-info">
+                <h3>Premium Design</h3>
+                <p>Modern visual identity</p>
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
 
 <!-- SERVICES -->
 
-<section class="services" id="services">
+<section class="page" id="services">
 
-    <h2>My Services</h2>
+    <div class="section-title">
+        <h2>My Services</h2>
+    </div>
 
     <div class="cards">
 
         <div class="card">
+            <div class="icon">📄</div>
             <h3>Flyer Design</h3>
             <p>
-                Beautiful and professional flyers for businesses,
+                Beautiful professional flyers for businesses,
                 events and promotions.
             </p>
         </div>
 
         <div class="card">
+            <div class="icon">💎</div>
             <h3>Logo Design</h3>
             <p>
-                Unique and professional logos that give your
-                brand a strong identity.
+                Unique logos that give your brand
+                a strong identity.
             </p>
         </div>
 
         <div class="card">
+            <div class="icon">🎂</div>
             <h3>Birthday Designs</h3>
             <p>
-                Creative birthday flyers, portraits and designs
-                for special occasions.
+                Creative birthday flyers, portraits
+                and special occasion designs.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📱</div>
+            <h3>Social Media</h3>
+            <p>
+                Professional graphics for Instagram,
+                TikTok, WhatsApp and other platforms.
             </p>
         </div>
 
@@ -335,68 +954,513 @@ footer {
 
 <!-- PORTFOLIO -->
 
-<section class="portfolio" id="portfolio">
+<section class="page" id="portfolio">
 
-    <h2>My Portfolio</h2>
-
-    <p>Some of my recent designs</p>
+    <div class="section-title">
+        <h2>My Portfolio</h2>
+        <span>Recent Work</span>
+    </div>
 
     <div class="portfolio-grid">
 
+        <div class="portfolio-item"
+             onclick="openImage('https://i.ibb.co/0jY2NDyD/6e18076357c770efcc8c2229f8e40488.jpg')">
 
-        <!-- DESIGN 1 -->
+            <img class="portfolio-img"
+                 src="https://i.ibb.co/0jY2NDyD/6e18076357c770efcc8c2229f8e40488.jpg">
 
-        <div class="portfolio-item">
-
-            <div class="image-container">
-
-                <img
-                    src="https://i.ibb.co/xKK2z2Wp/3af72cb4af43fe1a075dd998734f6761.jpg"
-                    alt="Topsy Prints Design 1"
-                >
-
+            <div class="portfolio-info">
+                <h3>Design 01</h3>
+                <p>Creative graphic design</p>
             </div>
-
-            <h3>Creative Design</h3>
 
         </div>
 
+        <div class="portfolio-item"
+             onclick="openImage('https://i.ibb.co/GvmFkY2j/3af72cb4af43fe1a075dd998734f6761.jpg')">
 
-        <!-- DESIGN 2 -->
+            <img class="portfolio-img"
+                 src="https://i.ibb.co/GvmFkY2j/3af72cb4af43fe1a075dd998734f6761.jpg">
 
-        <div class="portfolio-item">
-
-            <div class="image-container">
-
-                <img
-                    src="https://i.ibb.co/9m8RbzY9/06c4efa10e36deff62b407b31b6349cf.jpg"
-                    alt="Topsy Prints Design 2"
-                >
-
+            <div class="portfolio-info">
+                <h3>Design 02</h3>
+                <p>Premium visual design</p>
             </div>
-
-            <h3>Graphic Design</h3>
 
         </div>
 
+        <div class="portfolio-item"
+             onclick="openImage('https://i.ibb.co/1fm1JVMb/1a2d38ccbdab5d497e55313d192dbc1a.jpg')">
 
-        <!-- DESIGN 3 -->
+            <img class="portfolio-img"
+                 src="https://i.ibb.co/1fm1JVMb/1a2d38ccbdab5d497e55313d192dbc1a.jpg">
 
-        <div class="portfolio-item">
-
-            <div class="image-container">
-
-                <img
-                    src="https://i.ibb.co/5hyRv7HW/6e18076357c770efcc8c2229f8e40488.jpg"
-                    alt="Topsy Prints Design 3"
-                >
-
+            <div class="portfolio-info">
+                <h3>Design 03</h3>
+                <p>Modern graphic design</p>
             </div>
-
-            <h3>Flyer Design</h3>
 
         </div>
 
+        <div class="portfolio-item"
+             onclick="openImage('https://i.ibb.co/v66t2g9h/723cdc91-a8bd-4d95-89a3-3fe6a1671409-0-watermark.jpg')">
+
+            <img class="portfolio-img"
+                 src="https://i.ibb.co/v66t2g9h/723cdc91-a8bd-4d95-89a3-3fe6a1671409-0-watermark.jpg">
+
+            <div class="portfolio-info">
+                <h3>Design 04</h3>
+                <p>Professional design</p>
+            </div>
+
+        </div>
+
+        <div class="portfolio-item"
+             onclick="openImage('https://i.ibb.co/5Wkhzq73/cab4442a-1320-4027-b80a-d058b7425b0f-2-1779397547636.webp')">
+
+            <img class="portfolio-img"
+                 src="https://i.ibb.co/5Wkhzq73/cab4442a-1320-4027-b80a-d058b7425b0f-2-1779397547636.webp">
+
+            <div class="portfolio-info">
+                <h3>Design 05</h3>
+                <p>Creative portrait design</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- REQUESTS -->
+
+<section class="page" id="requests">
+
+    <div class="section-title">
+        <h2>My Requests</h2>
+    </div>
+
+    <div id="requestsList">
+        <div class="empty">
+            <div class="empty-icon">📋</div>
+            <p>Loading your requests...</p>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- ACCOUNT -->
+
+<section class="page" id="account">
+
+    <div class="section-title">
+        <h2>Account</h2>
+    </div>
+
+    <div id="accountContent">
+
+        <div class="account-card">
+
+            <div class="profile-head">
+
+                <div class="avatar">?</div>
+
+                <div>
+                    <h3>Not logged in</h3>
+                    <p>Create an account to save your requests.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary"
+                onclick="showPage('login')">
+            Login / Create Account
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section class="page" id="profile">
+
+    <div class="form-card">
+
+        <h2>My Profile</h2>
+        <p>Update your account information.</p>
+
+        <form onsubmit="updateProfile(event)">
+
+            <div class="field">
+                <label>Full Name</label>
+                <input id="profileName" type="text" required>
+            </div>
+
+            <div class="field">
+                <label>Email</label>
+                <input id="profileEmail" type="email" disabled>
+            </div>
+
+            <div class="field">
+                <label>Phone Number</label>
+                <input id="profilePhone" type="tel"
+                       placeholder="e.g. 09123456789">
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+                Save Profile
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section class="page" id="settings">
+
+    <div class="section-title">
+        <h2>Settings</h2>
+    </div>
+
+    <div class="account-card">
+
+        <div class="setting">
+
+            <div>
+                <h3>Notifications</h3>
+                <p>Receive updates about your requests.</p>
+            </div>
+
+            <button id="notificationToggle"
+                    class="toggle on"
+                    onclick="toggleNotifications()">
+                <span></span>
+            </button>
+
+        </div>
+
+        <div class="setting">
+
+            <div>
+                <h3>Change Password</h3>
+                <p>Update your account password.</p>
+            </div>
+
+            <button class="btn btn-secondary"
+                    onclick="showPage('change-password')">
+                Change
+            </button>
+
+        </div>
+
+        <div class="setting">
+
+            <div>
+                <h3>Forgot Password</h3>
+                <p>Send a password reset email.</p>
+            </div>
+
+            <button class="btn btn-secondary"
+                    onclick="showPage('forgot')">
+                Reset
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- LOGIN -->
+
+<section class="page" id="login">
+
+    <div class="auth-wrap">
+
+        <div class="auth-card">
+
+            <img class="auth-logo"
+                 src="topsy-logo.png"
+                 onerror="this.style.display='none'">
+
+            <h2>Welcome Back</h2>
+
+            <p class="sub">
+                Login to your Topsy Prints account.
+            </p>
+
+            <form onsubmit="loginUser(event)">
+
+                <div class="field">
+                    <label>Email</label>
+                    <input id="loginEmail"
+                           type="email"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label>Password</label>
+                    <input id="loginPassword"
+                           type="password"
+                           required>
+                </div>
+
+                <button class="btn btn-primary"
+                        style="width:100%"
+                        type="submit">
+                    Login
+                </button>
+
+            </form>
+
+            <div class="auth-links">
+
+                <button onclick="showPage('register')">
+                    Create Account
+                </button>
+
+                <button onclick="showPage('forgot')">
+                    Forgot Password?
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- REGISTER -->
+
+<section class="page" id="register">
+
+    <div class="auth-wrap">
+
+        <div class="auth-card">
+
+            <img class="auth-logo"
+                 src="topsy-logo.png"
+                 onerror="this.style.display='none'">
+
+            <h2>Create Account</h2>
+
+            <p class="sub">
+                Create your Topsy Prints account.
+            </p>
+
+            <form onsubmit="registerUser(event)">
+
+                <div class="field">
+                    <label>Full Name</label>
+                    <input id="registerName"
+                           type="text"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label>Email</label>
+                    <input id="registerEmail"
+                           type="email"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label>Password</label>
+                    <input id="registerPassword"
+                           type="password"
+                           minlength="6"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label>Phone Number</label>
+                    <input id="registerPhone"
+                           type="tel"
+                           placeholder="09123456789">
+                </div>
+
+                <button class="btn btn-primary"
+                        style="width:100%"
+                        type="submit">
+                    Create Account
+                </button>
+
+            </form>
+
+            <div class="auth-links">
+                <button onclick="showPage('login')">
+                    Already have an account? Login
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FORGOT -->
+
+<section class="page" id="forgot">
+
+    <div class="auth-wrap">
+
+        <div class="auth-card">
+
+            <h2>Reset Password</h2>
+
+            <p class="sub">
+                Enter your email and we'll send you a reset link.
+            </p>
+
+            <form onsubmit="forgotPassword(event)">
+
+                <div class="field">
+                    <label>Email</label>
+                    <input id="forgotEmail"
+                           type="email"
+                           required>
+                </div>
+
+                <button class="btn btn-primary"
+                        style="width:100%"
+                        type="submit">
+                    Send Reset Link
+                </button>
+
+            </form>
+
+            <div class="auth-links">
+                <button onclick="showPage('login')">
+                    Back to Login
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CHANGE PASSWORD -->
+
+<section class="page" id="change-password">
+
+    <div class="auth-wrap">
+
+        <div class="auth-card">
+
+            <h2>Change Password</h2>
+
+            <p class="sub">
+                Enter your new password below.
+            </p>
+
+            <form onsubmit="changePassword(event)">
+
+                <div class="field">
+                    <label>New Password</label>
+                    <input id="newPassword"
+                           type="password"
+                           minlength="6"
+                           required>
+                </div>
+
+                <button class="btn btn-primary"
+                        style="width:100%"
+                        type="submit">
+                    Update Password
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ORDER -->
+
+<section class="page" id="order">
+
+    <div class="form-card">
+
+        <h2>Order a Design</h2>
+
+        <p>
+            Tell me what you need and I'll get back to you.
+        </p>
+
+        <form onsubmit="submitOrder(event)">
+
+            <div class="field">
+                <label>Your Name</label>
+                <input id="orderName"
+                       type="text"
+                       required>
+            </div>
+
+            <div class="field">
+                <label>Design Type</label>
+
+                <select id="orderType" required>
+
+                    <option value="">Select a service</option>
+                    <option>Flyer Design</option>
+                    <option>Logo Design</option>
+                    <option>Birthday Design</option>
+                    <option>Social Media Design</option>
+                    <option>Other</option>
+
+                </select>
+
+            </div>
+
+            <div class="field">
+                <label>Description</label>
+
+                <textarea id="orderDescription"
+                          placeholder="Tell me what you want designed..."
+                          required></textarea>
+
+            </div>
+
+            <div class="field">
+                <label>Deadline</label>
+                <input id="orderDeadline"
+                       type="date">
+            </div>
+
+            <button class="btn btn-primary"
+                    type="submit">
+                Submit Request
+            </button>
+
+            <button class="btn btn-secondary"
+                    type="button"
+                    onclick="sendWhatsApp()"
+                    style="margin-left:6px">
+                WhatsApp Me
+            </button>
+
+        </form>
 
     </div>
 
@@ -405,34 +1469,1151 @@ footer {
 
 <!-- CONTACT -->
 
-<section class="contact" id="contact">
+<section class="page" id="contact">
 
-    <h2>Let's Work Together</h2>
+    <div class="section-title">
+        <h2>Let's Work Together</h2>
+    </div>
 
-    <p>
-        Need a professional design for your business or event?
-    </p>
+    <div class="contact-box">
 
-    <a
-        class="whatsapp"
-        href="https://wa.me/2349122741571"
-        target="_blank"
-    >
-        Contact Topsy Prints
-    </a>
+        <div class="contact-row">
+
+            <div class="ci">💬</div>
+
+            <div>
+                <h3>WhatsApp</h3>
+                <p>Chat with Topsy Prints directly.</p>
+            </div>
+
+        </div>
+
+        <br>
+
+        <a class="btn btn-primary"
+           href="https://wa.me/2349122741571"
+           target="_blank">
+            Open WhatsApp
+        </a>
+
+
+        <div class="contact-row">
+
+            <div class="ci">📱</div>
+
+            <div>
+                <h3>Phone</h3>
+                <p>09122741571</p>
+            </div>
+
+        </div>
+
+        <br>
+
+        <a class="btn btn-secondary"
+           href="tel:09122741571">
+            Call Me
+        </a>
+
+
+        <div class="contact-row">
+
+            <div class="ci">🎵</div>
+
+            <div>
+                <h3>TikTok</h3>
+                <p>Topsy Prints and Graphic</p>
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
+</main>
 
-<!-- FOOTER -->
 
-<footer>
+<!-- BOTTOM NAV -->
 
-    <p>
-        © 2026 Topsy Prints. All Rights Reserved.
-    </p>
+<nav class="bottom-nav">
 
-</footer>
+    <button class="nav-item active"
+            data-page="home"
+            onclick="showPage('home')">
+
+        <span class="nav-icon">⌂</span>
+        Home
+
+    </button>
+
+    <button class="nav-item"
+            data-page="services"
+            onclick="showPage('services')">
+
+        <span class="nav-icon">✦</span>
+        Services
+
+    </button>
+
+    <button class="nav-item"
+            data-page="portfolio"
+            onclick="showPage('portfolio')">
+
+        <span class="nav-icon">▣</span>
+        Portfolio
+
+    </button>
+
+    <button class="nav-item"
+            data-page="requests"
+            onclick="showPage('requests')">
+
+        <span class="nav-icon">☷</span>
+        Requests
+
+    </button>
+
+    <button class="nav-item"
+            data-page="account"
+            onclick="showPage('account')">
+
+        <span class="nav-icon">●</span>
+        Account
+
+    </button>
+
+</nav>
+
+
+<!-- TOAST -->
+
+<div id="toast"></div>
+
+
+<!-- IMAGE VIEWER -->
+
+<div class="viewer" id="viewer">
+
+    <button class="viewer-close"
+            onclick="closeImage()">
+        ×
+    </button>
+
+    <img id="viewerImage" src="" alt="Preview">
+
+</div>
+
+
+<script>
+
+/* =========================================
+   SUPABASE CONNECTION
+========================================= */
+
+const SUPABASE_URL =
+"https://runkinizvblncbwxdbnw.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+"sb_publishable_dKidmPybIgzxu4GF9g_zug_JljY5m02";
+
+const WHATSAPP_NUMBER =
+"2349122741571";
+
+const supabaseClient =
+window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
+
+
+/* =========================================
+   GLOBAL USER
+========================================= */
+
+let currentUser = null;
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+function toast(message){
+
+    const box =
+        document.getElementById("toast");
+
+    box.textContent = message;
+
+    box.classList.add("show");
+
+    setTimeout(() => {
+        box.classList.remove("show");
+    }, 3000);
+}
+
+
+/* =========================================
+   PAGE NAVIGATION
+========================================= */
+
+function showPage(pageId){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
+            page.classList.remove("active");
+        });
+
+    const page =
+        document.getElementById(pageId);
+
+    if(page){
+        page.classList.add("active");
+    }
+
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(item => {
+            item.classList.remove("active");
+
+            if(item.dataset.page === pageId){
+                item.classList.add("active");
+            }
+        });
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+    if(pageId === "requests"){
+        loadRequests();
+    }
+
+    if(pageId === "account"){
+        updateAccountUI();
+    }
+
+    if(pageId === "profile"){
+        loadProfile();
+    }
+}
+
+
+/* =========================================
+   IMAGE VIEWER
+========================================= */
+
+function openImage(url){
+
+    document
+        .getElementById("viewerImage")
+        .src = url;
+
+    document
+        .getElementById("viewer")
+        .classList.add("active");
+}
+
+function closeImage(){
+
+    document
+        .getElementById("viewer")
+        .classList.remove("active");
+}
+
+
+/* =========================================
+   REGISTER
+========================================= */
+
+async function registerUser(event){
+
+    event.preventDefault();
+
+    const name =
+        document.getElementById("registerName").value.trim();
+
+    const email =
+        document.getElementById("registerEmail").value.trim();
+
+    const password =
+        document.getElementById("registerPassword").value;
+
+    const phone =
+        document.getElementById("registerPhone").value.trim();
+
+    if(password.length < 6){
+
+        toast("Password must be at least 6 characters.");
+
+        return;
+    }
+
+    toast("Creating your account...");
+
+    const { data, error } =
+        await supabaseClient.auth.signUp({
+
+            email:email,
+
+            password:password,
+
+            options:{
+                data:{
+                    full_name:name,
+                    phone:phone
+                }
+            }
+
+        });
+
+
+    if(error){
+
+        toast(error.message);
+
+        return;
+    }
+
+
+    if(data.user){
+
+        currentUser = data.user;
+
+        toast(
+            "Account created successfully!"
+        );
+
+        setTimeout(() => {
+
+            showPage("account");
+
+            updateAccountUI();
+
+        },700);
+
+    }
+
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+async function loginUser(event){
+
+    event.preventDefault();
+
+    const email =
+        document.getElementById("loginEmail").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+    toast("Logging in...");
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+
+            email:email,
+
+            password:password
+
+        });
+
+
+    if(error){
+
+        toast(error.message);
+
+        return;
+    }
+
+
+    currentUser = data.user;
+
+    toast("Login successful!");
+
+    setTimeout(() => {
+
+        showPage("account");
+
+        updateAccountUI();
+
+    },600);
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+async function logoutUser(){
+
+    const { error } =
+        await supabaseClient.auth.signOut();
+
+    if(error){
+
+        toast(error.message);
+
+        return;
+    }
+
+    currentUser = null;
+
+    toast("Logged out.");
+
+    showPage("home");
+
+    updateAccountUI();
+}
+
+
+/* =========================================
+   ACCOUNT UI
+========================================= */
+
+async function updateAccountUI(){
+
+    const box =
+        document.getElementById("accountContent");
+
+    if(!currentUser){
+
+        box.innerHTML = `
+
+            <div class="account-card">
+
+                <div class="profile-head">
+
+                    <div class="avatar">?</div>
+
+                    <div>
+
+                        <h3>Not logged in</h3>
+
+                        <p>
+                            Create an account to save
+                            your design requests.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary"
+                    onclick="showPage('login')">
+
+                Login / Create Account
+
+            </button>
+
+        `;
+
+        return;
+    }
+
+
+    const name =
+        currentUser.user_metadata?.full_name
+        || "Topsy Prints Client";
+
+    const email =
+        currentUser.email || "";
+
+    const firstLetter =
+        name.charAt(0).toUpperCase();
+
+
+    box.innerHTML = `
+
+        <div class="account-card">
+
+            <div class="profile-head">
+
+                <div class="avatar">
+                    ${firstLetter}
+                </div>
+
+                <div>
+
+                    <h3>${escapeHTML(name)}</h3>
+
+                    <p>${escapeHTML(email)}</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="quick-grid">
+
+            <button class="quick-card"
+                    onclick="showPage('profile')">
+
+                <div class="quick-icon">👤</div>
+
+                <h3>My Profile</h3>
+
+                <p>Edit your details.</p>
+
+            </button>
+
+
+            <button class="quick-card"
+                    onclick="showPage('requests')">
+
+                <div class="quick-icon">📋</div>
+
+                <h3>My Requests</h3>
+
+                <p>View your orders.</p>
+
+            </button>
+
+
+            <button class="quick-card"
+                    onclick="showPage('settings')">
+
+                <div class="quick-icon">⚙️</div>
+
+                <h3>Settings</h3>
+
+                <p>Manage your account.</p>
+
+            </button>
+
+
+            <button class="quick-card"
+                    onclick="logoutUser()">
+
+                <div class="quick-icon">↪️</div>
+
+                <h3>Logout</h3>
+
+                <p>Sign out of your account.</p>
+
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================
+   PROFILE
+========================================= */
+
+async function loadProfile(){
+
+    if(!currentUser){
+
+        showPage("login");
+
+        return;
+    }
+
+    document.getElementById("profileName").value =
+        currentUser.user_metadata?.full_name || "";
+
+    document.getElementById("profileEmail").value =
+        currentUser.email || "";
+
+
+    const { data } =
+        await supabaseClient
+        .from("profiles")
+        .select("phone,notifications_enabled")
+        .eq("id",currentUser.id)
+        .maybeSingle();
+
+
+    if(data){
+
+        document.getElementById("profilePhone").value =
+            data.phone || "";
+
+        setNotificationButton(
+            data.notifications_enabled !== false
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   UPDATE PROFILE
+========================================= */
+
+async function updateProfile(event){
+
+    event.preventDefault();
+
+    if(!currentUser){
+
+        toast("Please login first.");
+
+        return;
+    }
+
+
+    const name =
+        document.getElementById("profileName").value.trim();
+
+    const phone =
+        document.getElementById("profilePhone").value.trim();
+
+
+    const { error:authError } =
+        await supabaseClient.auth.updateUser({
+
+            data:{
+                full_name:name,
+                phone:phone
+            }
+
+        });
+
+
+    if(authError){
+
+        toast(authError.message);
+
+        return;
+    }
+
+
+    const { error:profileError } =
+        await supabaseClient
+        .from("profiles")
+        .upsert({
+
+            id:currentUser.id,
+
+            full_name:name,
+
+            phone:phone
+
+        });
+
+
+    if(profileError){
+
+        toast(profileError.message);
+
+        return;
+    }
+
+
+    const { data } =
+        await supabaseClient.auth.getUser();
+
+    currentUser = data.user;
+
+    toast("Profile updated successfully.");
+
+    updateAccountUI();
+}
+
+
+/* =========================================
+   NOTIFICATIONS
+========================================= */
+
+function setNotificationButton(enabled){
+
+    const button =
+        document.getElementById("notificationToggle");
+
+    if(!button) return;
+
+    if(enabled){
+
+        button.classList.add("on");
+
+    }else{
+
+        button.classList.remove("on");
+
+    }
+
+}
+
+
+async function toggleNotifications(){
+
+    if(!currentUser){
+
+        toast("Please login first.");
+
+        return;
+    }
+
+
+    const button =
+        document.getElementById("notificationToggle");
+
+    const enabled =
+        !button.classList.contains("on");
+
+
+    const { error } =
+        await supabaseClient
+        .from("profiles")
+        .upsert({
+
+            id:currentUser.id,
+
+            notifications_enabled:enabled
+
+        });
+
+
+    if(error){
+
+        toast(error.message);
+
+        return;
+    }
+
+
+    setNotificationButton(enabled);
+
+    toast(
+        enabled
+        ? "Notifications enabled."
+        : "Notifications disabled."
+    );
+
+}
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+async function forgotPassword(event){
+
+    event.preventDefault();
+
+    const email =
+        document.getElementById("forgotEmail").value.trim();
+
+
+    const { error } =
+        await supabaseClient.auth.resetPasswordForEmail(
+            email,
+            {
+                redirectTo:
+                window.location.origin +
+                window.location.pathname
+            }
+        );
+
+
+    if(error){
+
+        toast(error.message);
+
+        return;
+    }
+
+
+    toast(
+        "Password reset link sent. Check your email."
+    );
+
+}
+
+
+/* =========================================
+   CHANGE PASSWORD
+========================================= */
+
+async function changePassword(event){
+
+    event.preventDefault();
+
+    if(!currentUser){
+
+        toast("Please login first.");
+
+        return;
+    }
+
+
+    const password =
+        document.getElementById("newPassword").value;
+
+
+    const { error } =
+        await supabaseClient.auth.updateUser({
+
+            password:password
+
+        });
+
+
+    if(error){
+
+        toast(error.message);
+
+        return;
+    }
+
+
+    toast("Password updated successfully.");
+
+    document.getElementById("newPassword").value = "";
+
+}
+
+
+/* =========================================
+   SUBMIT DESIGN REQUEST
+========================================= */
+
+async function submitOrder(event){
+
+    event.preventDefault();
+
+    if(!currentUser){
+
+        toast("Please create an account or login first.");
+
+        showPage("login");
+
+        return;
+    }
+
+
+    const name =
+        document.getElementById("orderName").value.trim();
+
+    const designType =
+        document.getElementById("orderType").value;
+
+    const description =
+        document.getElementById("orderDescription").value.trim();
+
+    const deadline =
+        document.getElementById("orderDeadline").value;
+
+
+    const { error } =
+        await supabaseClient
+        .from("design_requests")
+        .insert({
+
+            user_id:currentUser.id,
+
+            name:name,
+
+            design_type:designType,
+
+            description:description,
+
+            deadline:deadline || null
+
+        });
+
+
+    if(error){
+
+        toast(error.message);
+
+        return;
+    }
+
+
+    toast("Design request saved successfully!");
+
+
+    sendWhatsApp();
+
+
+    document.getElementById("orderName").value = "";
+
+    document.getElementById("orderType").value = "";
+
+    document.getElementById("orderDescription").value = "";
+
+    document.getElementById("orderDeadline").value = "";
+
+
+    setTimeout(() => {
+
+        showPage("requests");
+
+        loadRequests();
+
+    },700);
+
+}
+
+
+/* =========================================
+   WHATSAPP
+========================================= */
+
+function sendWhatsApp(){
+
+    const name =
+        document.getElementById("orderName").value.trim();
+
+    const type =
+        document.getElementById("orderType").value;
+
+    const description =
+        document.getElementById("orderDescription").value.trim();
+
+    const deadline =
+        document.getElementById("orderDeadline").value;
+
+
+    const message =
+`Hello Topsy Prints 👋
+
+I want to order a design.
+
+Name: ${name || "Not provided"}
+Design Type: ${type || "Not provided"}
+Description: ${description || "Not provided"}
+Deadline: ${deadline || "Not specified"}
+
+Thank you.`;
+
+    const url =
+        "https://wa.me/" +
+        WHATSAPP_NUMBER +
+        "?text=" +
+        encodeURIComponent(message);
+
+
+    window.open(url,"_blank");
+
+}
+
+
+/* =========================================
+   LOAD REQUESTS
+========================================= */
+
+async function loadRequests(){
+
+    const list =
+        document.getElementById("requestsList");
+
+
+    if(!currentUser){
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">🔐</div>
+
+                <p>
+                    Please login to view your requests.
+                </p>
+
+                <br>
+
+                <button class="btn btn-primary"
+                        onclick="showPage('login')">
+
+                    Login
+
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    list.innerHTML = `
+
+        <div class="empty">
+            <div class="empty-icon">⏳</div>
+            <p>Loading requests...</p>
+        </div>
+
+    `;
+
+
+    const { data, error } =
+        await supabaseClient
+        .from("design_requests")
+        .select("*")
+        .eq("user_id",currentUser.id)
+        .order("created_at",{
+            ascending:false
+        });
+
+
+    if(error){
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">⚠️</div>
+
+                <p>${escapeHTML(error.message)}</p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    if(!data || data.length === 0){
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">📋</div>
+
+                <p>You have no design requests yet.</p>
+
+                <br>
+
+                <button class="btn btn-primary"
+                        onclick="showPage('order')">
+
+                    Order a Design
+
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    list.innerHTML =
+        data.map(request => `
+
+            <div class="request">
+
+                <div class="request-top">
+
+                    <h3>
+                        ${escapeHTML(
+                            request.design_type || "Design Request"
+                        )}
+                    </h3>
+
+                    <span class="status">
+                        ${escapeHTML(
+                            request.status || "Pending"
+                        )}
+                    </span>
+
+                </div>
+
+                <p>
+                    ${escapeHTML(
+                        request.description || ""
+                    )}
+                </p>
+
+                <p>
+                    📅 Deadline:
+                    ${request.deadline
+                        ? escapeHTML(request.deadline)
+                        : "Not specified"}
+                </p>
+
+                <p>
+                    🕒
+                    ${new Date(
+                        request.created_at
+                    ).toLocaleString()}
+                </p>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================================
+   AUTH STATE
+========================================= */
+
+async function initializeAuth(){
+
+    const { data } =
+        await supabaseClient.auth.getSession();
+
+    currentUser =
+        data.session?.user || null;
+
+    updateAccountUI();
+
+}
+
+
+supabaseClient.auth.onAuthStateChange(
+    async (event,session) => {
+
+        currentUser =
+            session?.user || null;
+
+        updateAccountUI();
+
+    }
+);
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value){
+
+    if(value === null || value === undefined){
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+initializeAuth();
+
+</script>
 
 </body>
 </html>
